@@ -123,6 +123,7 @@ export interface ApolloClientOptions<TCacheShape> {
 // solution is to reexport mergeOptions where it was previously declared (here).
 import { mergeOptions } from "../utilities/index.js";
 import { getApolloClientMemoryInternals } from "../utilities/caching/getMemoryInternals.js";
+import { WatchFragmentOptions } from "../cache/core/cache.js";
 export { mergeOptions };
 
 /**
@@ -466,6 +467,28 @@ export class ApolloClient<TCacheShape> implements DataProxy {
     optimistic: boolean = false
   ): T | null {
     return this.cache.readQuery<T, TVariables>(options, optimistic);
+  }
+
+  /**
+   * Watches the cache store of the fragment according to the options specified
+   * and returns an {@link ObservableQuery}. We can subscribe to this
+   * {@link ObservableQuery} and receive updated results through a GraphQL
+   * observer when the cache store changes.
+   *
+   * You must pass in a GraphQL document with a single fragment or a document
+   * with multiple fragments that represent what you are reading. If you pass
+   * in a document with multiple fragments then you must also specify a
+   * `fragmentName`.
+   *
+   * @param options - An object of type {@link WatchFragmentOptions} that allows
+   * the cache to identify the fragment and optionally specify whether to react
+   * to optimistic updates.
+   */
+
+  public watchFragment<T = any, TVariables = OperationVariables>(
+    options: WatchFragmentOptions<T, TVariables>
+  ) {
+    return this.cache.watchFragment<T, TVariables>(options);
   }
 
   /**
