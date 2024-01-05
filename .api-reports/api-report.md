@@ -81,6 +81,11 @@ export abstract class ApolloCache<TSerialized> implements DataProxy {
     updateQuery<TData = any, TVariables = any>(options: Cache_2.UpdateQueryOptions<TData, TVariables>, update: (data: TData | null) => TData | null | void): TData | null;
     // (undocumented)
     abstract watch<TData = any, TVariables = any>(watch: Cache_2.WatchOptions<TData, TVariables>): () => void;
+    // Warning: (ae-forgotten-export) The symbol "WatchFragmentOptions" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "WatchFragmentResult" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    watchFragment<TData = any, TVars = OperationVariables>(options: WatchFragmentOptions<TData, TVars>): Observable<WatchFragmentResult<TData>>;
     // (undocumented)
     abstract write<TData = any, TVariables = any>(write: Cache_2.WriteOptions<TData, TVariables>): Reference | undefined;
     // (undocumented)
@@ -3012,6 +3017,29 @@ TVariables
     variables?: TVariables;
 } : {
     variables: TVariables;
+};
+
+// @public (undocumented)
+interface WatchFragmentOptions<TData, TVars> {
+    // (undocumented)
+    fragment: DocumentNode | TypedDocumentNode<TData, TVars>;
+    // (undocumented)
+    fragmentName?: string;
+    // (undocumented)
+    from: StoreObject | Reference | string;
+    // (undocumented)
+    optimistic?: boolean;
+}
+
+// @public (undocumented)
+type WatchFragmentResult<TData> = {
+    data: TData;
+    complete: true;
+    missing?: undefined;
+} | {
+    data: DeepPartial<TData>;
+    complete: false;
+    missing?: MissingTree | undefined;
 };
 
 // @public (undocumented)
