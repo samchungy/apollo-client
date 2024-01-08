@@ -123,7 +123,7 @@ export interface ApolloClientOptions<TCacheShape> {
 // solution is to reexport mergeOptions where it was previously declared (here).
 import { mergeOptions } from "../utilities/index.js";
 import { getApolloClientMemoryInternals } from "../utilities/caching/getMemoryInternals.js";
-import { WatchFragmentOptions } from "../cache/core/cache.js";
+import type { WatchFragmentOptions } from "../cache/core/cache.js";
 export { mergeOptions };
 
 /**
