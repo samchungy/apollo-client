@@ -186,7 +186,7 @@ export abstract class ApolloCache<TSerialized> implements DataProxy {
       optimistic,
     };
 
-    let latestDiff = this.diff<TData>(diffOptions);
+    let latestDiff: DataProxy.DiffResult<TData> | undefined = undefined;
 
     return new Observable((observer) => {
       return this.watch<TData, TVars>({
@@ -204,7 +204,6 @@ export abstract class ApolloCache<TSerialized> implements DataProxy {
               diff.missing.map((error) => error.missing)
             );
           }
-
           if (!equal(diff, latestDiff)) {
             latestDiff = diff;
             observer.next(result);

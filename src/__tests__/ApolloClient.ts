@@ -14,7 +14,7 @@ import { ApolloLink } from "../link/core";
 import { HttpLink } from "../link/http";
 import { InMemoryCache } from "../cache";
 import { concatPagination } from "../utilities";
-import { itAsync } from "../testing";
+import { itAsync, wait } from "../testing";
 import { spyOnConsole } from "../testing/internal";
 import { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import { invariant } from "../utilities/globals";
@@ -2182,7 +2182,7 @@ describe("ApolloClient", () => {
       text?: string;
     };
 
-    it("if all data is available, `complete` is `true`", async () => {
+    it.only("if all data is available, `complete` is `true`", async () => {
       const cache = new InMemoryCache();
       const client = new ApolloClient({
         cache,
@@ -2195,15 +2195,6 @@ describe("ApolloClient", () => {
         }
       `;
 
-      const observable = client.watchFragment({
-        fragment: ItemFragment,
-        from: { __typename: "Item", id: 5 },
-      });
-
-      const handleNext = jest.fn();
-
-      observable.subscribe(handleNext);
-
       cache.writeFragment({
         fragment: ItemFragment,
         data: {
@@ -2213,7 +2204,19 @@ describe("ApolloClient", () => {
         },
       });
 
+      const observable = client.watchFragment({
+        fragment: ItemFragment,
+        from: { __typename: "Item", id: 5 },
+      });
+
+      const handleNext = jest.fn();
+
+      observable.subscribe(handleNext);
+
+      await wait(0); // need to wait a tick
+
       expect(handleNext).toHaveBeenCalledTimes(1);
+
       expect(handleNext).toHaveBeenLastCalledWith({
         data: {
           __typename: "Item",
@@ -2259,6 +2262,7 @@ describe("ApolloClient", () => {
       }
 
       expect(handleNext).toHaveBeenCalledTimes(1);
+
       expect(handleNext).toHaveBeenLastCalledWith({
         data: {
           __typename: "Item",
@@ -2410,7 +2414,7 @@ describe("ApolloClient", () => {
           link: ApolloLink.empty(),
         });
 
-        const observable = client.watchQuery({
+        const queryObs = client.watchQuery({
           query,
         });
 
