@@ -980,6 +980,8 @@ export type TypePolicy = {
 
 // @public (undocumented)
 interface WatchFragmentOptions<TData, TVars> {
+    // @deprecated (undocumented)
+    canonizeResults?: boolean;
     // (undocumented)
     fragment: DocumentNode | TypedDocumentNode<TData, TVars>;
     // (undocumented)
@@ -988,17 +990,18 @@ interface WatchFragmentOptions<TData, TVars> {
     from: StoreObject | Reference | string;
     // (undocumented)
     optimistic?: boolean;
+    variables?: TVars;
 }
 
 // @public (undocumented)
 type WatchFragmentResult<TData> = {
     data: TData;
     complete: true;
-    missing?: undefined;
+    missing?: never;
 } | {
     data: DeepPartial<TData>;
     complete: false;
-    missing?: MissingTree | undefined;
+    missing: MissingTree;
 };
 
 // @public (undocumented)

@@ -167,10 +167,10 @@ class ApolloClient<TCacheShape> implements DataProxy {
     readonly typeDefs: ApolloClientOptions<TCacheShape>["typeDefs"];
     // (undocumented)
     version: string;
-    // Warning: (ae-unresolved-link) The @link reference could not be resolved: The package "@apollo/client" does not have an export "ObservableQuery"
-    // Warning: (ae-unresolved-link) The @link reference could not be resolved: The package "@apollo/client" does not have an export "ObservableQuery"
+    // Warning: (ae-unresolved-link) The @link reference could not be resolved: The package "@apollo/client" does not have an export "Observable"
+    // Warning: (ae-unresolved-link) The @link reference could not be resolved: The package "@apollo/client" does not have an export "Observable"
     // Warning: (ae-unresolved-link) The @link reference could not be resolved: The package "@apollo/client" does not have an export "WatchFragmentOptions"
-    watchFragment<T = any, TVariables = OperationVariables>(options: WatchFragmentOptions<T, TVariables>): Observable<WatchFragmentResult<T>>;
+    watchFragment<TFragmentData = unknown, TVariables = OperationVariables>(options: WatchFragmentOptions<TFragmentData, TVariables>): Observable<WatchFragmentResult<TFragmentData>>;
     // Warning: (ae-forgotten-export) The symbol "WatchQueryOptions" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ObservableQuery" needs to be exported by the entry point index.d.ts
     // Warning: (ae-unresolved-link) The @link reference could not be resolved: The package "@apollo/client" does not have an export "ObservableQuery"
@@ -1664,6 +1664,8 @@ interface UriFunction {
 
 // @public (undocumented)
 interface WatchFragmentOptions<TData, TVars> {
+    // @deprecated (undocumented)
+    canonizeResults?: boolean;
     // (undocumented)
     fragment: DocumentNode | TypedDocumentNode<TData, TVars>;
     // (undocumented)
@@ -1672,17 +1674,18 @@ interface WatchFragmentOptions<TData, TVars> {
     from: StoreObject | Reference | string;
     // (undocumented)
     optimistic?: boolean;
+    variables?: TVars;
 }
 
 // @public (undocumented)
 type WatchFragmentResult<TData> = {
     data: TData;
     complete: true;
-    missing?: undefined;
+    missing?: never;
 } | {
     data: DeepPartial<TData>;
     complete: false;
-    missing?: MissingTree | undefined;
+    missing: MissingTree;
 };
 
 // @public (undocumented)

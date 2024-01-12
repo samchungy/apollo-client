@@ -143,8 +143,10 @@ export class ApolloClient<TCacheShape> implements DataProxy {
     readonly typeDefs: ApolloClientOptions<TCacheShape>["typeDefs"];
     // (undocumented)
     version: string;
+    // Warning: (ae-unresolved-link) The @link reference could not be resolved: This type of declaration is not supported yet by the resolver
+    // Warning: (ae-unresolved-link) The @link reference could not be resolved: This type of declaration is not supported yet by the resolver
     // Warning: (ae-unresolved-link) The @link reference could not be resolved: The package "@apollo/client" does not have an export "WatchFragmentOptions"
-    watchFragment<T = any, TVariables = OperationVariables>(options: WatchFragmentOptions<T, TVariables>): Observable<WatchFragmentResult<T>>;
+    watchFragment<TFragmentData = unknown, TVariables = OperationVariables>(options: WatchFragmentOptions<TFragmentData, TVariables>): Observable<WatchFragmentResult<TFragmentData>>;
     watchQuery<T = any, TVariables extends OperationVariables = OperationVariables>(options: WatchQueryOptions<TVariables, T>): ObservableQuery<T, TVariables>;
     writeFragment<TData = any, TVariables = OperationVariables>(options: DataProxy.WriteFragmentOptions<TData, TVariables>): Reference | undefined;
     writeQuery<TData = any, TVariables = OperationVariables>(options: DataProxy.WriteQueryOptions<TData, TVariables>): Reference | undefined;
@@ -3023,6 +3025,8 @@ TVariables
 
 // @public (undocumented)
 interface WatchFragmentOptions<TData, TVars> {
+    // @deprecated (undocumented)
+    canonizeResults?: boolean;
     // (undocumented)
     fragment: DocumentNode | TypedDocumentNode<TData, TVars>;
     // (undocumented)
@@ -3031,17 +3035,18 @@ interface WatchFragmentOptions<TData, TVars> {
     from: StoreObject | Reference | string;
     // (undocumented)
     optimistic?: boolean;
+    variables?: TVars;
 }
 
 // @public (undocumented)
 type WatchFragmentResult<TData> = {
     data: TData;
     complete: true;
-    missing?: undefined;
+    missing?: never;
 } | {
     data: DeepPartial<TData>;
     complete: false;
-    missing?: MissingTree | undefined;
+    missing: MissingTree;
 };
 
 // @public (undocumented)
