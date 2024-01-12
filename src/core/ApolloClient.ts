@@ -471,8 +471,8 @@ export class ApolloClient<TCacheShape> implements DataProxy {
 
   /**
    * Watches the cache store of the fragment according to the options specified
-   * and returns an {@link ObservableQuery}. We can subscribe to this
-   * {@link ObservableQuery} and receive updated results through a GraphQL
+   * and returns an {@link Observable}. We can subscribe to this
+   * {@link Observable} and receive updated results through a GraphQL
    * observer when the cache store changes.
    *
    * You must pass in a GraphQL document with a single fragment or a document
@@ -485,10 +485,11 @@ export class ApolloClient<TCacheShape> implements DataProxy {
    * to optimistic updates.
    */
 
-  public watchFragment<T = any, TVariables = OperationVariables>(
-    options: WatchFragmentOptions<T, TVariables>
-  ) {
-    return this.cache.watchFragment<T, TVariables>(options);
+  public watchFragment<
+    TFragmentData = unknown,
+    TVariables = OperationVariables,
+  >(options: WatchFragmentOptions<TFragmentData, TVariables>) {
+    return this.cache.watchFragment<TFragmentData, TVariables>(options);
   }
 
   /**

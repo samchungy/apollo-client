@@ -1,5 +1,4 @@
 import * as React from "rehackt";
-import { equal } from "@wry/equality";
 
 import type { DeepPartial } from "../../utilities/index.js";
 import { mergeDeepArray } from "../../utilities/index.js";
@@ -76,31 +75,16 @@ export function useFragment<TData = any, TVars = OperationVariables>(
     React.useCallback(
       (forceUpdate) => {
         let lastTimeout = 0;
-        const watchedFragment = cache.watchFragment(options).subscribe({
+        const subscription = cache.watchFragment(options).subscribe({
           next: (result) => {
             resultRef.current = result;
             lastTimeout = setTimeout(forceUpdate) as any;
           },
         });
         return () => {
-          watchedFragment.unsubscribe();
+          subscription.unsubscribe();
           clearTimeout(lastTimeout);
         };
-        // const unsubscribe = cache.watch({
-        //   ...diffOptions,
-        //   immediate: true,
-        //   callback(diff) {
-        //     if (!equal(diff.result, resultRef.current.data)) {
-        //       resultRef.current = diffToResult(diff);
-        //       // If we get another update before we've re-rendered, bail out of
-        //       // the update and try again. This ensures that the relative timing
-        //       // between useQuery and useFragment stays roughly the same as
-        //       // fixed in https://github.com/apollographql/apollo-client/pull/11083
-        //       clearTimeout(lastTimeout);
-        //       lastTimeout = setTimeout(forceUpdate) as any;
-        //     }
-        //   },
-        // });
       },
       [cache, diffOptions]
     ),

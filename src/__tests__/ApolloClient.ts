@@ -2420,7 +2420,7 @@ describe("ApolloClient", () => {
 
         const handleNext = jest.fn();
 
-        observable.subscribe(handleNext);
+        queryObs.subscribe(handleNext);
 
         cache.writeQuery({
           query,
