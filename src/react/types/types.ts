@@ -24,7 +24,7 @@ import type {
   FetchMoreQueryOptions,
   ErrorPolicy,
   RefetchWritePolicy,
-  Context,
+  OperationContext,
 } from "../../core/index.js";
 import type {
   MutationSharedOptions,
@@ -41,7 +41,7 @@ export type {
 
 /* Common types */
 
-export type { DefaultContext, Context };
+export type { DefaultContext as Context, OperationContext };
 
 export type CommonOptions<TOptions> = TOptions & {
   client?: ApolloClient<object>;
@@ -52,7 +52,7 @@ export type CommonOptions<TOptions> = TOptions & {
 export interface BaseQueryOptions<
   TVariables extends OperationVariables = OperationVariables,
   TData = any,
-  TContext extends Context = Partial<DefaultContext>,
+  TContext extends OperationContext = Partial<DefaultContext>,
 > extends SharedWatchQueryOptions<TVariables, TData, TContext> {
   /** {@inheritDoc @apollo/client!QueryOptionsDocumentation#ssr:member} */
   ssr?: boolean;
@@ -203,7 +203,7 @@ export type SuspenseQueryHookFetchPolicy = Extract<
 export interface SuspenseQueryHookOptions<
   TData = unknown,
   TVariables extends OperationVariables = OperationVariables,
-  TContext extends Context = Partial<DefaultContext>,
+  TContext extends OperationContext = Partial<DefaultContext>,
 > {
   /** {@inheritDoc @apollo/client!QueryOptionsDocumentation#client:member} */
   client?: ApolloClient<any>;
@@ -300,7 +300,7 @@ export interface LoadableQueryHookOptions {
  */
 export interface QueryLazyOptions<
   TVariables,
-  TContext extends Context = Partial<DefaultContext>,
+  TContext extends OperationContext = Partial<DefaultContext>,
 > {
   /** {@inheritDoc @apollo/client!QueryOptionsDocumentation#variables:member} */
   variables?: TVariables;
@@ -348,7 +348,7 @@ export type RefetchQueriesFunction = (
 export interface BaseMutationOptions<
   TData = any,
   TVariables = OperationVariables,
-  TContext extends Context = Partial<DefaultContext>,
+  TContext extends OperationContext = Partial<DefaultContext>,
   TCache extends ApolloCache<any> = ApolloCache<any>,
 > extends MutationSharedOptions<TData, TVariables, TContext, TCache> {
   /** {@inheritDoc @apollo/client!MutationOptionsDocumentation#client:member} */
@@ -366,7 +366,7 @@ export interface BaseMutationOptions<
 export interface MutationFunctionOptions<
   TData = any,
   TVariables = OperationVariables,
-  TContext extends Context = Partial<DefaultContext>,
+  TContext extends OperationContext = Partial<DefaultContext>,
   TCache extends ApolloCache<any> = ApolloCache<any>,
 > extends BaseMutationOptions<TData, TVariables, TContext, TCache> {
   /** {@inheritDoc @apollo/client!MutationOptionsDocumentation#mutation:member} */
@@ -391,7 +391,7 @@ export interface MutationResult<TData = any> {
 export declare type MutationFunction<
   TData = any,
   TVariables = OperationVariables,
-  TContext extends Context = Partial<DefaultContext>,
+  TContext extends OperationContext = Partial<DefaultContext>,
   TCache extends ApolloCache<any> = ApolloCache<any>,
 > = (
   options?: MutationFunctionOptions<TData, TVariables, TContext, TCache>
@@ -400,14 +400,14 @@ export declare type MutationFunction<
 export interface MutationHookOptions<
   TData = any,
   TVariables = OperationVariables,
-  TContext extends Context = Partial<DefaultContext>,
+  TContext extends OperationContext = Partial<DefaultContext>,
   TCache extends ApolloCache<any> = ApolloCache<any>,
 > extends BaseMutationOptions<TData, TVariables, TContext, TCache> {}
 
 export interface MutationDataOptions<
   TData = any,
   TVariables = OperationVariables,
-  TContext extends Context = Partial<DefaultContext>,
+  TContext extends OperationContext = Partial<DefaultContext>,
   TCache extends ApolloCache<any> = ApolloCache<any>,
 > extends BaseMutationOptions<TData, TVariables, TContext, TCache> {
   mutation: DocumentNode | TypedDocumentNode<TData, TVariables>;
@@ -416,7 +416,7 @@ export interface MutationDataOptions<
 export type MutationTuple<
   TData,
   TVariables,
-  TContext extends Context = Partial<DefaultContext>,
+  TContext extends OperationContext = Partial<DefaultContext>,
   TCache extends ApolloCache<any> = ApolloCache<any>,
 > = [
   mutate: (
@@ -442,7 +442,7 @@ export interface OnSubscriptionDataOptions<TData = any> {
 export interface BaseSubscriptionOptions<
   TData = any,
   TVariables extends OperationVariables = OperationVariables,
-  TContext extends Context = Partial<DefaultContext>,
+  TContext extends OperationContext = Partial<DefaultContext>,
 > {
   /** {@inheritDoc @apollo/client!SubscriptionOptionsDocumentation#variables:member} */
   variables?: TVariables;

@@ -85,8 +85,10 @@ export const createSignalIfSupported: () => {
     signal: AbortSignal;
 };
 
+// Warning: (ae-forgotten-export) The symbol "OperationContext" needs to be exported by the entry point index.d.ts
+//
 // @public (undocumented)
-interface DefaultContext extends Record<string, any> {
+interface DefaultContext extends OperationContext {
 }
 
 // Warning: (ae-forgotten-export) The symbol "Printer" needs to be exported by the entry point index.d.ts
@@ -152,12 +154,12 @@ export const fallbackHttpConfig: {
 // @public (undocumented)
 type FetchResult<TData = Record<string, any>, TContext = Record<string, any>, TExtensions = Record<string, any>> = SingleExecutionResult<TData, TContext, TExtensions> | ExecutionPatchResult<TData, TExtensions>;
 
+// Warning: (ae-forgotten-export) The symbol "DefaultContext" needs to be exported by the entry point index.d.ts
+//
 // @public (undocumented)
-interface GraphQLRequest<TVariables = Record<string, any>> {
-    // Warning: (ae-forgotten-export) The symbol "DefaultContext" needs to be exported by the entry point index.d.ts
-    //
+interface GraphQLRequest<TVariables = Record<string, any>, TContext extends OperationContext = Partial<DefaultContext>> {
     // (undocumented)
-    context?: DefaultContext;
+    context?: TContext;
     // (undocumented)
     extensions?: Record<string, any>;
     // (undocumented)
@@ -248,6 +250,9 @@ interface Operation {
     // (undocumented)
     variables: Record<string, any>;
 }
+
+// @public (undocumented)
+type OperationContext = Record<string, any>;
 
 // @public (undocumented)
 export function parseAndCheckHttpResponse(operations: Operation | Operation[]): (response: Response) => Promise<any>;

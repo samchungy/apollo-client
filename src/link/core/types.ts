@@ -1,6 +1,6 @@
 import type { GraphQLFormattedError } from "graphql";
 import type { DocumentNode } from "graphql";
-import type { Context, DefaultContext } from "../../core/index.js";
+import type { OperationContext, DefaultContext } from "../../core/index.js";
 export type { DocumentNode };
 
 import type { Observable } from "../../utilities/index.js";
@@ -65,7 +65,7 @@ export type ExecutionPatchResult<
 
 export interface GraphQLRequest<
   TVariables = Record<string, any>,
-  TContext extends Context = Partial<DefaultContext>,
+  TContext extends OperationContext = Partial<DefaultContext>,
 > {
   query: DocumentNode;
   variables?: TVariables;

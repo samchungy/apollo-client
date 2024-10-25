@@ -52,10 +52,12 @@ class ApolloLink {
 // Warning: (ae-forgotten-export) The symbol "DefaultContext" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
-export type ContextSetter = (operation: GraphQLRequest, prevContext: DefaultContext) => Promise<DefaultContext> | DefaultContext;
+export type ContextSetter<TContext = Partial<DefaultContext>> = (operation: GraphQLRequest, prevContext: DefaultContext) => Promise<Partial<TContext>> | Partial<TContext>;
 
+// Warning: (ae-forgotten-export) The symbol "OperationContext" needs to be exported by the entry point index.d.ts
+//
 // @public (undocumented)
-interface DefaultContext extends Record<string, any> {
+interface DefaultContext extends OperationContext {
 }
 
 // Warning: (ae-forgotten-export) The symbol "ExecutionPatchResultBase" needs to be exported by the entry point index.d.ts
@@ -105,9 +107,9 @@ interface ExecutionPatchResultBase {
 type FetchResult<TData = Record<string, any>, TContext = Record<string, any>, TExtensions = Record<string, any>> = SingleExecutionResult<TData, TContext, TExtensions> | ExecutionPatchResult<TData, TExtensions>;
 
 // @public (undocumented)
-interface GraphQLRequest<TVariables = Record<string, any>> {
+interface GraphQLRequest<TVariables = Record<string, any>, TContext extends OperationContext = Partial<DefaultContext>> {
     // (undocumented)
-    context?: DefaultContext;
+    context?: TContext;
     // (undocumented)
     extensions?: Record<string, any>;
     // (undocumented)
@@ -157,6 +159,9 @@ interface Operation {
 }
 
 // @public (undocumented)
+type OperationContext = Record<string, any>;
+
+// @public (undocumented)
 type Path = ReadonlyArray<string | number>;
 
 // @public (undocumented)
@@ -165,7 +170,7 @@ type RequestHandler = (operation: Operation, forward: NextLink) => Observable<Fe
 // Warning: (ae-forgotten-export) The symbol "ApolloLink" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
-export function setContext(setter: ContextSetter): ApolloLink;
+export function setContext<TContext = Partial<DefaultContext>>(setter: ContextSetter<TContext>): ApolloLink;
 
 // @public (undocumented)
 interface SingleExecutionResult<TData = Record<string, any>, TContext = DefaultContext, TExtensions = Record<string, any>> {

@@ -117,7 +117,7 @@ export class ApolloClient<TCacheShape> implements DataProxy {
     getResolvers(): Resolvers;
     // (undocumented)
     link: ApolloLink;
-    mutate<TData = any, TVariables extends OperationVariables = OperationVariables, TContext extends Record<string, any> = DefaultContext, TCache extends ApolloCache<any> = ApolloCache<any>>(options: MutationOptions<TData, TVariables, TContext>): Promise<FetchResult<TData>>;
+    mutate<TData = any, TVariables extends OperationVariables = OperationVariables, TContext extends OperationContext = Partial<DefaultContext>, TCache extends ApolloCache<any> = ApolloCache<any>>(options: MutationOptions<TData, TVariables, TContext>): Promise<FetchResult<TData>>;
     onClearStore(cb: () => Promise<any>): () => void;
     onResetStore(cb: () => Promise<any>): () => void;
     query<T = any, TVariables extends OperationVariables = OperationVariables>(options: QueryOptions<TVariables, T>): Promise<ApolloQueryResult<T>>;
@@ -133,7 +133,7 @@ export class ApolloClient<TCacheShape> implements DataProxy {
     setLocalStateFragmentMatcher(fragmentMatcher: FragmentMatcher): void;
     setResolvers(resolvers: Resolvers | Resolvers[]): void;
     stop(): void;
-    subscribe<T = any, TVariables extends OperationVariables = OperationVariables>(options: SubscriptionOptions<TVariables, T>): Observable<FetchResult<T>>;
+    subscribe<T = any, TVariables extends OperationVariables = OperationVariables, TContext extends OperationContext = Partial<DefaultContext>>(options: SubscriptionOptions<TVariables, T, TContext>): Observable<FetchResult<T>>;
     // (undocumented)
     readonly typeDefs: ApolloClientOptions<TCacheShape>["typeDefs"];
     // (undocumented)
@@ -565,7 +565,7 @@ type DeepPartialReadonlySet<T> = {} & ReadonlySet<DeepPartial<T>>;
 type DeepPartialSet<T> = {} & Set<DeepPartial<T>>;
 
 // @public (undocumented)
-export interface DefaultContext extends Record<string, any> {
+export interface DefaultContext extends OperationContext {
 }
 
 // Warning: (ae-forgotten-export) The symbol "KeyFieldsContext" needs to be exported by the entry point index.d.ts
@@ -812,9 +812,9 @@ export interface FetchMoreOptions<TData = any, TVariables = OperationVariables> 
 }
 
 // @public (undocumented)
-export interface FetchMoreQueryOptions<TVariables, TData = any> {
+export interface FetchMoreQueryOptions<TVariables, TData = any, TContext extends OperationContext = Partial<DefaultContext>> {
     // (undocumented)
-    context?: DefaultContext;
+    context?: TContext;
     query?: DocumentNode | TypedDocumentNode<TData, TVariables>;
     variables?: Partial<TVariables>;
 }
@@ -992,9 +992,9 @@ const getInMemoryCacheMemoryInternals: (() => {
 export { gql }
 
 // @public (undocumented)
-export interface GraphQLRequest<TVariables = Record<string, any>> {
+export interface GraphQLRequest<TVariables = Record<string, any>, TContext extends OperationContext = Partial<DefaultContext>> {
     // (undocumented)
-    context?: DefaultContext;
+    context?: TContext;
     // (undocumented)
     extensions?: Record<string, any>;
     // (undocumented)
@@ -1386,7 +1386,7 @@ type Modifiers<T extends Record<string, any> = Record<string, unknown>> = Partia
 }>;
 
 // @public (undocumented)
-interface MutationBaseOptions<TData = any, TVariables = OperationVariables, TContext = DefaultContext, TCache extends ApolloCache<any> = ApolloCache<any>> {
+interface MutationBaseOptions<TData = any, TVariables = OperationVariables, TContext extends OperationContext = Partial<DefaultContext>, TCache extends ApolloCache<any> = ApolloCache<any>> {
     awaitRefetchQueries?: boolean;
     context?: TContext;
     errorPolicy?: ErrorPolicy;
@@ -1407,7 +1407,7 @@ export type MutationFetchPolicy = Extract<FetchPolicy, "network-only" | "no-cach
 // Warning: (ae-forgotten-export) The symbol "MutationSharedOptions" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
-export interface MutationOptions<TData = any, TVariables = OperationVariables, TContext = DefaultContext, TCache extends ApolloCache<any> = ApolloCache<any>> extends MutationSharedOptions<TData, TVariables, TContext, TCache> {
+export interface MutationOptions<TData = any, TVariables = OperationVariables, TContext extends OperationContext = Partial<DefaultContext>, TCache extends ApolloCache<any> = ApolloCache<any>> extends MutationSharedOptions<TData, TVariables, TContext, TCache> {
     mutation: DocumentNode | TypedDocumentNode<TData, TVariables>;
 }
 
@@ -1428,7 +1428,7 @@ export type MutationQueryReducersMap<T = {
 // Warning: (ae-forgotten-export) The symbol "MutationBaseOptions" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
-interface MutationSharedOptions<TData = any, TVariables = OperationVariables, TContext = DefaultContext, TCache extends ApolloCache<any> = ApolloCache<any>> extends MutationBaseOptions<TData, TVariables, TContext, TCache> {
+interface MutationSharedOptions<TData = any, TVariables = OperationVariables, TContext extends OperationContext = Partial<DefaultContext>, TCache extends ApolloCache<any> = ApolloCache<any>> extends MutationBaseOptions<TData, TVariables, TContext, TCache> {
     fetchPolicy?: MutationFetchPolicy;
     keepRootFields?: boolean;
 }
@@ -1619,6 +1619,9 @@ export interface Operation {
 }
 
 // @public (undocumented)
+export type OperationContext = Record<string, any>;
+
+// @public (undocumented)
 export type OperationVariables = Record<string, any>;
 
 // @public (undocumented)
@@ -1629,7 +1632,7 @@ export type OptimisticStoreItem = {
 };
 
 // @public (undocumented)
-type OptionsUnion<TData, TVariables extends OperationVariables, TContext> = WatchQueryOptions<TVariables, TData> | QueryOptions<TVariables, TData> | MutationOptions<TData, TVariables, TContext, any>;
+type OptionsUnion<TData, TVariables extends OperationVariables, TContext extends OperationContext = DefaultContext> = WatchQueryOptions<TVariables, TData> | QueryOptions<TVariables, TData> | MutationOptions<TData, TVariables, TContext, any>;
 
 // @public (undocumented)
 export function parseAndCheckHttpResponse(operations: Operation | Operation[]): (response: Response) => Promise<any>;
@@ -1838,7 +1841,7 @@ class QueryManager<TStore> {
         keepRootFields?: boolean;
     }, cache?: ApolloCache<TStore>): Promise<FetchResult<TData>>;
     // (undocumented)
-    mutate<TData, TVariables extends OperationVariables, TContext extends Record<string, any>, TCache extends ApolloCache<any>>({ mutation, variables, optimisticResponse, updateQueries, refetchQueries, awaitRefetchQueries, update: updateWithProxyFn, onQueryUpdated, fetchPolicy, errorPolicy, keepRootFields, context, }: MutationOptions<TData, TVariables, TContext>): Promise<FetchResult<TData>>;
+    mutate<TData, TVariables extends OperationVariables, TContext extends OperationContext, TCache extends ApolloCache<any>>({ mutation, variables, optimisticResponse, updateQueries, refetchQueries, awaitRefetchQueries, update: updateWithProxyFn, onQueryUpdated, fetchPolicy, errorPolicy, keepRootFields, context, }: MutationOptions<TData, TVariables, TContext>): Promise<FetchResult<TData>>;
     // (undocumented)
     mutationStore?: {
         [mutationId: string]: MutationStoreValue;
@@ -1858,7 +1861,7 @@ class QueryManager<TStore> {
     // (undocumented)
     readonly ssrMode: boolean;
     // (undocumented)
-    startGraphQLSubscription<T = any>({ query, fetchPolicy, errorPolicy, variables, context, extensions, }: SubscriptionOptions): Observable<FetchResult<T>>;
+    startGraphQLSubscription<T = any, TVariables extends OperationVariables = OperationVariables, TContext extends OperationContext = Partial<DefaultContext>>({ query, fetchPolicy, errorPolicy, variables, context, extensions, }: SubscriptionOptions<TVariables, T, TContext>): Observable<FetchResult<T>>;
     stop(): void;
     // (undocumented)
     stopQuery(queryId: string): void;
@@ -1897,10 +1900,10 @@ interface QueryManagerOptions<TStore> {
 }
 
 // @public
-interface QueryOptions<TVariables = OperationVariables, TData = any> {
+interface QueryOptions<TVariables = OperationVariables, TData = any, TContext extends OperationContext = Partial<DefaultContext>> {
     // @deprecated
     canonizeResults?: boolean;
-    context?: DefaultContext;
+    context?: TContext;
     errorPolicy?: ErrorPolicy;
     fetchPolicy?: FetchPolicy;
     notifyOnNetworkStatusChange?: boolean;
@@ -2082,10 +2085,10 @@ export type ServerParseError = Error & {
 export { setLogVerbosity }
 
 // @public (undocumented)
-interface SharedWatchQueryOptions<TVariables extends OperationVariables, TData> {
+interface SharedWatchQueryOptions<TVariables extends OperationVariables, TData, TContext extends OperationContext = Partial<DefaultContext>> {
     // @deprecated
     canonizeResults?: boolean;
-    context?: DefaultContext;
+    context?: TContext;
     errorPolicy?: ErrorPolicy;
     fetchPolicy?: WatchQueryFetchPolicy;
     initialFetchPolicy?: WatchQueryFetchPolicy;
@@ -2150,17 +2153,17 @@ class Stump extends Layer {
 }
 
 // @public (undocumented)
-export type SubscribeToMoreOptions<TData = any, TSubscriptionVariables = OperationVariables, TSubscriptionData = TData> = {
+export type SubscribeToMoreOptions<TData = any, TSubscriptionVariables = OperationVariables, TSubscriptionData = TData, TContext extends OperationContext = Partial<DefaultContext>> = {
     document: DocumentNode | TypedDocumentNode<TSubscriptionData, TSubscriptionVariables>;
     variables?: TSubscriptionVariables;
     updateQuery?: UpdateQueryFn<TData, TSubscriptionVariables, TSubscriptionData>;
     onError?: (error: Error) => void;
-    context?: DefaultContext;
+    context?: TContext;
 };
 
 // @public (undocumented)
-export interface SubscriptionOptions<TVariables = OperationVariables, TData = any> {
-    context?: DefaultContext;
+export interface SubscriptionOptions<TVariables = OperationVariables, TData = any, TContext extends OperationContext = Partial<DefaultContext>> {
+    context?: TContext;
     errorPolicy?: ErrorPolicy;
     extensions?: Record<string, any>;
     fetchPolicy?: FetchPolicy;
@@ -2319,9 +2322,9 @@ interface WriteContext extends ReadMergeModifyContext {
 // src/cache/inmemory/types.ts:139:3 - (ae-forgotten-export) The symbol "KeyFieldsFunction" needs to be exported by the entry point index.d.ts
 // src/core/ObservableQuery.ts:116:5 - (ae-forgotten-export) The symbol "QueryManager" needs to be exported by the entry point index.d.ts
 // src/core/ObservableQuery.ts:117:5 - (ae-forgotten-export) The symbol "QueryInfo" needs to be exported by the entry point index.d.ts
-// src/core/QueryManager.ts:138:5 - (ae-forgotten-export) The symbol "MutationStoreValue" needs to be exported by the entry point index.d.ts
-// src/core/QueryManager.ts:382:7 - (ae-forgotten-export) The symbol "UpdateQueries" needs to be exported by the entry point index.d.ts
-// src/core/watchQueryOptions.ts:275:2 - (ae-forgotten-export) The symbol "UpdateQueryFn" needs to be exported by the entry point index.d.ts
+// src/core/QueryManager.ts:139:5 - (ae-forgotten-export) The symbol "MutationStoreValue" needs to be exported by the entry point index.d.ts
+// src/core/QueryManager.ts:383:7 - (ae-forgotten-export) The symbol "UpdateQueries" needs to be exported by the entry point index.d.ts
+// src/core/watchQueryOptions.ts:287:2 - (ae-forgotten-export) The symbol "UpdateQueryFn" needs to be exported by the entry point index.d.ts
 // src/link/http/selectHttpOptionsAndBody.ts:128:32 - (ae-forgotten-export) The symbol "HttpQueryOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

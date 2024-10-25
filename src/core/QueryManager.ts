@@ -63,7 +63,7 @@ import type {
   InternalRefetchQueriesResult,
   InternalRefetchQueriesMap,
   DefaultContext,
-  Context,
+  OperationContext,
 } from "./types.js";
 import type { LocalState } from "./LocalState.js";
 
@@ -204,7 +204,7 @@ export class QueryManager<TStore> {
   public async mutate<
     TData,
     TVariables extends OperationVariables,
-    TContext extends Context,
+    TContext extends OperationContext,
     TCache extends ApolloCache<any>,
   >({
     mutation,
@@ -971,7 +971,7 @@ export class QueryManager<TStore> {
   public startGraphQLSubscription<
     T = any,
     TVariables extends OperationVariables = OperationVariables,
-    TContext extends Context = Partial<DefaultContext>,
+    TContext extends OperationContext = Partial<DefaultContext>,
   >({
     query,
     fetchPolicy,

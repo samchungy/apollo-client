@@ -56,8 +56,10 @@ export interface ApolloErrorOptions {
     }>;
 }
 
+// Warning: (ae-forgotten-export) The symbol "OperationContext" needs to be exported by the entry point index.d.ts
+//
 // @public (undocumented)
-interface DefaultContext extends Record<string, any> {
+interface DefaultContext extends OperationContext {
 }
 
 // Warning: (ae-forgotten-export) The symbol "ExecutionPatchResultBase" needs to be exported by the entry point index.d.ts
@@ -142,6 +144,9 @@ export function isApolloError(err: Error): err is ApolloError;
 
 // @public (undocumented)
 export type NetworkError = Error | ServerParseError | ServerError | null;
+
+// @public (undocumented)
+type OperationContext = Record<string, any>;
 
 // @public (undocumented)
 type Path = ReadonlyArray<string | number>;

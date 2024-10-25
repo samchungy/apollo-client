@@ -3,7 +3,7 @@ import type {
   WatchQueryOptions,
   MutationOptions,
   OperationVariables,
-  Context,
+  OperationContext,
   DefaultContext,
 } from "../../core/index.js";
 
@@ -12,7 +12,7 @@ import { compact } from "./compact.js";
 type OptionsUnion<
   TData,
   TVariables extends OperationVariables,
-  TContext extends Context = DefaultContext,
+  TContext extends OperationContext = DefaultContext,
 > =
   | WatchQueryOptions<TVariables, TData>
   | QueryOptions<TVariables, TData>

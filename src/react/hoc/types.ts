@@ -8,7 +8,7 @@ import type {
   FetchMoreQueryOptions,
   SubscribeToMoreOptions,
   DefaultContext,
-  Context,
+  OperationContext,
 } from "../../core/index.js";
 import type {
   MutationFunction,
@@ -91,7 +91,7 @@ export interface OperationOption<
   TData,
   TGraphQLVariables extends OperationVariables = OperationVariables,
   TChildProps = ChildProps<TProps, TData, TGraphQLVariables>,
-  TContext extends Context = Partial<DefaultContext>,
+  TContext extends OperationContext = Partial<DefaultContext>,
   TCache extends ApolloCache<any> = ApolloCache<any>,
 > {
   options?:
