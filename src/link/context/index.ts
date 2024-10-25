@@ -2,16 +2,18 @@ import type { Operation, GraphQLRequest, NextLink } from "../core/index.js";
 import { ApolloLink } from "../core/index.js";
 import type { ObservableSubscription } from "../../utilities/index.js";
 import { Observable } from "../../utilities/index.js";
-import type { DefaultContext } from "../../core/index.js";
+import type { DefaultContext, OperationContext } from "../../core/index.js";
 
-export type ContextSetter<TContext = Partial<DefaultContext>> = (
+export type ContextSetter<
+  TContext extends OperationContext = Partial<DefaultContext>,
+> = (
   operation: GraphQLRequest,
   prevContext: DefaultContext
 ) => Promise<Partial<TContext>> | Partial<TContext>;
 
-export function setContext<TContext = Partial<DefaultContext>>(
-  setter: ContextSetter<TContext>
-): ApolloLink {
+export function setContext<
+  TContext extends OperationContext = Partial<DefaultContext>,
+>(setter: ContextSetter<TContext>): ApolloLink {
   return new ApolloLink((operation: Operation, forward: NextLink) => {
     const { ...request } = operation;
 

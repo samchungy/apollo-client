@@ -6,7 +6,6 @@ import { equal } from "@wry/equality";
 
 import { DocumentType, verifyDocumentType } from "../parser/index.js";
 import type {
-  Context,
   NoInfer,
   SubscriptionHookOptions,
   SubscriptionResult,
@@ -17,6 +16,7 @@ import type {
   ErrorPolicy,
   FetchPolicy,
   FetchResult,
+  OperationContext,
   OperationVariables,
 } from "../../core/index.js";
 import { ApolloError, Observable } from "../../core/index.js";
@@ -320,7 +320,7 @@ export function useSubscription<
 function createSubscription<
   TData = any,
   TVariables extends OperationVariables = OperationVariables,
-  TContext extends Context = Partial<DefaultContext>,
+  TContext extends OperationContext = Partial<DefaultContext>,
 >(
   client: ApolloClient<any>,
   query: TypedDocumentNode<TData, TVariables>,

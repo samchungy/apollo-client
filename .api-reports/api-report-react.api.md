@@ -1419,7 +1419,7 @@ export interface PreloadQueryFunction {
 // Warning: (ae-forgotten-export) The symbol "VariablesOption" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
-export type PreloadQueryOptions<TVariables extends OperationVariables = OperationVariables, TContext extends Context = Partial<Context>> = {
+export type PreloadQueryOptions<TVariables extends OperationVariables = OperationVariables, TContext extends OperationContext = Partial<Context>> = {
     canonizeResults?: boolean;
     context?: TContext;
     errorPolicy?: ErrorPolicy;
@@ -2198,7 +2198,7 @@ handlers: {
 ];
 
 // @public
-export function useMutation<TData = any, TVariables = OperationVariables, TContext extends Context = Partial<Context>, TCache extends ApolloCache<any> = ApolloCache<any>>(mutation: DocumentNode | TypedDocumentNode<TData, TVariables>, options?: MutationHookOptions<NoInfer_2<TData>, NoInfer_2<TVariables>, TContext, TCache>): MutationTuple<TData, TVariables, TContext, TCache>;
+export function useMutation<TData = any, TVariables = OperationVariables, TContext extends OperationContext = Partial<Context>, TCache extends ApolloCache<any> = ApolloCache<any>>(mutation: DocumentNode | TypedDocumentNode<TData, TVariables>, options?: MutationHookOptions<NoInfer_2<TData>, NoInfer_2<TVariables>, TContext, TCache>): MutationTuple<TData, TVariables, TContext, TCache>;
 
 // @public
 export function useQuery<TData = any, TVariables extends OperationVariables = OperationVariables>(query: DocumentNode | TypedDocumentNode<TData, TVariables>, options?: QueryHookOptions<NoInfer_2<TData>, NoInfer_2<TVariables>>): QueryResult<TData, TVariables>;

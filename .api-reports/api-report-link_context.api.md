@@ -49,13 +49,12 @@ class ApolloLink {
     split(test: (op: Operation) => boolean, left: ApolloLink | RequestHandler, right?: ApolloLink | RequestHandler): ApolloLink;
 }
 
+// Warning: (ae-forgotten-export) The symbol "OperationContext" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "DefaultContext" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
-export type ContextSetter<TContext = Partial<DefaultContext>> = (operation: GraphQLRequest, prevContext: DefaultContext) => Promise<Partial<TContext>> | Partial<TContext>;
+export type ContextSetter<TContext extends OperationContext = Partial<DefaultContext>> = (operation: GraphQLRequest, prevContext: DefaultContext) => Promise<Partial<TContext>> | Partial<TContext>;
 
-// Warning: (ae-forgotten-export) The symbol "OperationContext" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 interface DefaultContext extends OperationContext {
 }
@@ -170,7 +169,7 @@ type RequestHandler = (operation: Operation, forward: NextLink) => Observable<Fe
 // Warning: (ae-forgotten-export) The symbol "ApolloLink" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
-export function setContext<TContext = Partial<DefaultContext>>(setter: ContextSetter<TContext>): ApolloLink;
+export function setContext<TContext extends OperationContext = Partial<DefaultContext>>(setter: ContextSetter<TContext>): ApolloLink;
 
 // @public (undocumented)
 interface SingleExecutionResult<TData = Record<string, any>, TContext = DefaultContext, TExtensions = Record<string, any>> {
