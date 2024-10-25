@@ -12,7 +12,7 @@ import { compact } from "./compact.js";
 type OptionsUnion<
   TData,
   TVariables extends OperationVariables,
-  TContext extends OperationContext = DefaultContext,
+  TContext extends OperationContext = Partial<DefaultContext>,
 > =
   | WatchQueryOptions<TVariables, TData>
   | QueryOptions<TVariables, TData>

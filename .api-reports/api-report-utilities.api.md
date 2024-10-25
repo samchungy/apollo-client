@@ -1935,7 +1935,7 @@ type OperationContext = Record<string, any>;
 type OperationVariables = Record<string, any>;
 
 // @public (undocumented)
-type OptionsUnion<TData, TVariables extends OperationVariables, TContext extends OperationContext = DefaultContext> = WatchQueryOptions<TVariables, TData> | QueryOptions<TVariables, TData> | MutationOptions<TData, TVariables, TContext, any>;
+type OptionsUnion<TData, TVariables extends OperationVariables, TContext extends OperationContext = Partial<DefaultContext>> = WatchQueryOptions<TVariables, TData> | QueryOptions<TVariables, TData> | MutationOptions<TData, TVariables, TContext, any>;
 
 // @public (undocumented)
 type Path = ReadonlyArray<string | number>;
