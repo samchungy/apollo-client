@@ -134,14 +134,13 @@ interface ExecutionPatchResultBase {
     hasNext?: boolean;
 }
 
+// Warning: (ae-forgotten-export) The symbol "DefaultContext" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "SingleExecutionResult" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "ExecutionPatchResult" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
-type FetchResult<TData = Record<string, any>, TContext = Record<string, any>, TExtensions = Record<string, any>> = SingleExecutionResult<TData, TContext, TExtensions> | ExecutionPatchResult<TData, TExtensions>;
+type FetchResult<TData = Record<string, any>, TContext extends OperationContext = DefaultContext, TExtensions = Record<string, any>> = SingleExecutionResult<TData, TContext, TExtensions> | ExecutionPatchResult<TData, TExtensions>;
 
-// Warning: (ae-forgotten-export) The symbol "DefaultContext" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 interface GraphQLRequest<TVariables = Record<string, any>, TContext extends OperationContext = Partial<DefaultContext>> {
     // (undocumented)
@@ -227,7 +226,7 @@ type ServerParseError = Error & {
 };
 
 // @public (undocumented)
-interface SingleExecutionResult<TData = Record<string, any>, TContext = DefaultContext, TExtensions = Record<string, any>> {
+interface SingleExecutionResult<TData = Record<string, any>, TContext extends OperationContext = DefaultContext, TExtensions = Record<string, any>> {
     // (undocumented)
     context?: TContext;
     // (undocumented)

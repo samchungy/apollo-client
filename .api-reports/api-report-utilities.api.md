@@ -993,7 +993,7 @@ interface FetchMoreQueryOptions<TVariables, TData = any, TContext extends Operat
 type FetchPolicy = "cache-first" | "network-only" | "cache-only" | "no-cache" | "standby";
 
 // @public (undocumented)
-type FetchResult<TData = Record<string, any>, TContext = Record<string, any>, TExtensions = Record<string, any>> = SingleExecutionResult<TData, TContext, TExtensions> | ExecutionPatchResult<TData, TExtensions>;
+type FetchResult<TData = Record<string, any>, TContext extends OperationContext = DefaultContext, TExtensions = Record<string, any>> = SingleExecutionResult<TData, TContext, TExtensions> | ExecutionPatchResult<TData, TExtensions>;
 
 // @public (undocumented)
 interface FieldFunctionOptions<TArgs = Record<string, any>, TVars = Record<string, any>> {
@@ -2435,7 +2435,7 @@ interface SharedWatchQueryOptions<TVariables extends OperationVariables, TData, 
 export function shouldInclude({ directives }: SelectionNode, variables?: Record<string, any>): boolean;
 
 // @public (undocumented)
-interface SingleExecutionResult<TData = Record<string, any>, TContext = DefaultContext, TExtensions = Record<string, any>> {
+interface SingleExecutionResult<TData = Record<string, any>, TContext extends OperationContext = DefaultContext, TExtensions = Record<string, any>> {
     // (undocumented)
     context?: TContext;
     // (undocumented)

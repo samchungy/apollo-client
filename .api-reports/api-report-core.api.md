@@ -823,7 +823,7 @@ export interface FetchMoreQueryOptions<TVariables, TData = any, TContext extends
 export type FetchPolicy = "cache-first" | "network-only" | "cache-only" | "no-cache" | "standby";
 
 // @public (undocumented)
-export type FetchResult<TData = Record<string, any>, TContext = Record<string, any>, TExtensions = Record<string, any>> = SingleExecutionResult<TData, TContext, TExtensions> | ExecutionPatchResult<TData, TExtensions>;
+export type FetchResult<TData = Record<string, any>, TContext extends OperationContext = DefaultContext, TExtensions = Record<string, any>> = SingleExecutionResult<TData, TContext, TExtensions> | ExecutionPatchResult<TData, TExtensions>;
 
 // @public (undocumented)
 export interface FieldFunctionOptions<TArgs = Record<string, any>, TVars = Record<string, any>> {
@@ -2105,7 +2105,7 @@ interface SharedWatchQueryOptions<TVariables extends OperationVariables, TData, 
 }
 
 // @public (undocumented)
-export interface SingleExecutionResult<TData = Record<string, any>, TContext = DefaultContext, TExtensions = Record<string, any>> {
+export interface SingleExecutionResult<TData = Record<string, any>, TContext extends OperationContext = DefaultContext, TExtensions = Record<string, any>> {
     // (undocumented)
     context?: TContext;
     // (undocumented)

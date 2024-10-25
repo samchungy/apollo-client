@@ -92,7 +92,7 @@ export interface Operation {
 
 export interface SingleExecutionResult<
   TData = Record<string, any>,
-  TContext = DefaultContext,
+  TContext extends OperationContext = DefaultContext,
   TExtensions = Record<string, any>,
 > {
   // data might be undefined if errorPolicy was set to 'ignore'
@@ -104,7 +104,7 @@ export interface SingleExecutionResult<
 
 export type FetchResult<
   TData = Record<string, any>,
-  TContext = Record<string, any>,
+  TContext extends OperationContext = DefaultContext,
   TExtensions = Record<string, any>,
 > =
   | SingleExecutionResult<TData, TContext, TExtensions>
