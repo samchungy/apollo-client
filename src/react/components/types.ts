@@ -5,6 +5,7 @@ import type * as ReactTypes from "react";
 
 import type {
   OperationVariables,
+  Context,
   DefaultContext,
   ApolloCache,
 } from "../../core/index.js";
@@ -31,7 +32,7 @@ export interface QueryComponentOptions<
 export interface MutationComponentOptions<
   TData = any,
   TVariables = OperationVariables,
-  TContext = DefaultContext,
+  TContext extends Context = Partial<DefaultContext>,
   TCache extends ApolloCache<any> = ApolloCache<any>,
 > extends BaseMutationOptions<TData, TVariables, TContext, TCache> {
   mutation: DocumentNode | TypedDocumentNode<TData, TVariables>;

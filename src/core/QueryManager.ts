@@ -63,6 +63,7 @@ import type {
   InternalRefetchQueriesResult,
   InternalRefetchQueriesMap,
   DefaultContext,
+  Context,
 } from "./types.js";
 import type { LocalState } from "./LocalState.js";
 
@@ -203,7 +204,7 @@ export class QueryManager<TStore> {
   public async mutate<
     TData,
     TVariables extends OperationVariables,
-    TContext extends Record<string, any>,
+    TContext extends Context,
     TCache extends ApolloCache<any>,
   >({
     mutation,
@@ -967,18 +968,22 @@ export class QueryManager<TStore> {
     this.getQuery(observableQuery.queryId).setObservableQuery(observableQuery);
   }
 
-  public startGraphQLSubscription<T = any>({
+  public startGraphQLSubscription<
+    T = any,
+    TVariables extends OperationVariables = OperationVariables,
+    TContext extends Context = Partial<DefaultContext>,
+  >({
     query,
     fetchPolicy,
     errorPolicy = "none",
     variables,
-    context = {},
+    context = {} as TContext,
     extensions = {},
-  }: SubscriptionOptions): Observable<FetchResult<T>> {
+  }: SubscriptionOptions<TVariables, T, TContext>): Observable<FetchResult<T>> {
     query = this.transform(query);
-    variables = this.getVariables(query, variables);
+    variables = this.getVariables(query, variables) as TVariables;
 
-    const makeObservable = (variables: OperationVariables) =>
+    const makeObservable = (variables: TVariables) =>
       this.getObservableFromLink<T>(query, context, variables, extensions).map(
         (result) => {
           if (fetchPolicy !== "no-cache") {

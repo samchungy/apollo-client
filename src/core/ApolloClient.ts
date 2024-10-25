@@ -22,6 +22,7 @@ import type {
   RefetchQueriesResult,
   InternalRefetchQueriesResult,
   RefetchQueriesInclude,
+  Context,
 } from "./types.js";
 
 import type {
@@ -474,7 +475,7 @@ export class ApolloClient<TCacheShape> implements DataProxy {
   public mutate<
     TData = any,
     TVariables extends OperationVariables = OperationVariables,
-    TContext extends Record<string, any> = DefaultContext,
+    TContext extends Context = Partial<DefaultContext>,
     TCache extends ApolloCache<any> = ApolloCache<any>,
   >(
     options: MutationOptions<TData, TVariables, TContext>
@@ -494,8 +495,13 @@ export class ApolloClient<TCacheShape> implements DataProxy {
   public subscribe<
     T = any,
     TVariables extends OperationVariables = OperationVariables,
-  >(options: SubscriptionOptions<TVariables, T>): Observable<FetchResult<T>> {
-    return this.queryManager.startGraphQLSubscription<T>(options);
+    TContext extends Context = Partial<DefaultContext>,
+  >(
+    options: SubscriptionOptions<TVariables, T, TContext>
+  ): Observable<FetchResult<T>> {
+    return this.queryManager.startGraphQLSubscription<T, TVariables, TContext>(
+      options
+    );
   }
 
   /**

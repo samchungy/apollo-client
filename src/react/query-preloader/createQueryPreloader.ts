@@ -15,7 +15,7 @@ import type {
 } from "../../utilities/index.js";
 import { InternalQueryReference, wrapQueryRef } from "../internal/index.js";
 import type { PreloadedQueryRef } from "../internal/index.js";
-import type { NoInfer } from "../index.js";
+import type { Context, NoInfer } from "../index.js";
 import { wrapHook } from "../hooks/internal/index.js";
 
 type VariablesOption<TVariables extends OperationVariables> =
@@ -41,11 +41,12 @@ export type PreloadQueryFetchPolicy = Extract<
 
 export type PreloadQueryOptions<
   TVariables extends OperationVariables = OperationVariables,
+  TContext extends Context = Partial<DefaultContext>,
 > = {
   /** {@inheritDoc @apollo/client!QueryOptionsDocumentation#canonizeResults:member} */
   canonizeResults?: boolean;
   /** {@inheritDoc @apollo/client!QueryOptionsDocumentation#context:member} */
-  context?: DefaultContext;
+  context?: TContext;
   /** {@inheritDoc @apollo/client!QueryOptionsDocumentation#errorPolicy:member} */
   errorPolicy?: ErrorPolicy;
   /** {@inheritDoc @apollo/client!QueryOptionsDocumentation#fetchPolicy:member} */

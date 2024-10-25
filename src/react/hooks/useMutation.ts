@@ -2,6 +2,7 @@ import * as React from "rehackt";
 import type { DocumentNode } from "graphql";
 import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import type {
+  Context,
   MutationFunctionOptions,
   MutationHookOptions,
   MutationResult,
@@ -72,7 +73,7 @@ import { useIsomorphicLayoutEffect } from "./internal/useIsomorphicLayoutEffect.
 export function useMutation<
   TData = any,
   TVariables = OperationVariables,
-  TContext = DefaultContext,
+  TContext extends Context = Partial<DefaultContext>,
   TCache extends ApolloCache<any> = ApolloCache<any>,
 >(
   mutation: DocumentNode | TypedDocumentNode<TData, TVariables>,

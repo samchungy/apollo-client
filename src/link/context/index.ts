@@ -4,12 +4,14 @@ import type { ObservableSubscription } from "../../utilities/index.js";
 import { Observable } from "../../utilities/index.js";
 import type { DefaultContext } from "../../core/index.js";
 
-export type ContextSetter = (
+export type ContextSetter<TContext = Partial<DefaultContext>> = (
   operation: GraphQLRequest,
   prevContext: DefaultContext
-) => Promise<DefaultContext> | DefaultContext;
+) => Promise<Partial<TContext>> | Partial<TContext>;
 
-export function setContext(setter: ContextSetter): ApolloLink {
+export function setContext<TContext = Partial<DefaultContext>>(
+  setter: ContextSetter<TContext>
+): ApolloLink {
   return new ApolloLink((operation: Operation, forward: NextLink) => {
     const { ...request } = operation;
 
