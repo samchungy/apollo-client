@@ -117,7 +117,7 @@ export interface ApolloClientOptions<TCacheShape> {
    * See this [example object](https://www.apollographql.com/docs/react/api/core/ApolloClient#example-defaultoptions-object).
    */
   defaultOptions?: DefaultOptions;
-  defaultContext?: Partial<DefaultContext>;
+  defaultContext?: DefaultContext;
   /**
    * If `true`, Apollo Client will assume results read from the cache are never mutated by application code, which enables substantial performance optimizations.
    *

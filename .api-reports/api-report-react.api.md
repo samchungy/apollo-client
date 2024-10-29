@@ -180,7 +180,7 @@ interface ApolloClientOptions<TCacheShape> {
     // (undocumented)
     credentials?: string;
     // (undocumented)
-    defaultContext?: Partial<Context>;
+    defaultContext?: Context;
     defaultOptions?: DefaultOptions;
     devtools?: DevtoolsOptions;
     // (undocumented)
