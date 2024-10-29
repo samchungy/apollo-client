@@ -351,6 +351,7 @@ type BackgroundQueryHookOptionsNoInfer<TData, TVariables extends OperationVariab
 interface BaseQueryOptions<TVariables extends OperationVariables = OperationVariables, TData = any, TContext extends OperationContext = Partial<DefaultContext>> extends SharedWatchQueryOptions<TVariables, TData, TContext> {
     // Warning: (ae-forgotten-export) The symbol "ApolloClient" needs to be exported by the entry point index.d.ts
     client?: ApolloClient<any>;
+    context?: TContext;
     ssr?: boolean;
 }
 

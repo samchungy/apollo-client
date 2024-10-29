@@ -59,6 +59,7 @@ export interface BaseQueryOptions<
   /** {@inheritDoc @apollo/client!QueryOptionsDocumentation#client:member} */
   client?: ApolloClient<any>;
   /** {@inheritDoc @apollo/client!QueryOptionsDocumentation#context:member} */
+  context?: TContext;
 }
 
 export interface QueryFunctionOptions<

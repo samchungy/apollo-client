@@ -354,6 +354,7 @@ interface BaseMutationOptions<TData = any, TVariables = OperationVariables, TCon
 // @public (undocumented)
 interface BaseQueryOptions<TVariables extends OperationVariables = OperationVariables, TData = any, TContext extends OperationContext = Partial<DefaultContext>> extends SharedWatchQueryOptions<TVariables, TData, TContext> {
     client?: ApolloClient<any>;
+    context?: TContext;
     ssr?: boolean;
 }
 
